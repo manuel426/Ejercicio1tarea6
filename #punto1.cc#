@@ -1,0 +1,92 @@
+/*#ejercicio 3
+#Tarea 2 metodos computacionales*/
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+
+
+int main(int argc, char **argv){
+/*puntero, abre el archivo y como no existe lo crea*/
+FILE *in;
+/*ecuaciones */
+int m;
+m = atoi(argv[1]);
+/* otras variables*/
+double distancia;
+double posx = 0.0;	
+double posy = 0.0;
+double posz = 0.0;
+int i = 0;
+int j = 0;
+int k = 0;
+char archivo[100]="final_stats_3D_M.dat";
+sprintf(archivo, "final_stats_3D_%d.dat", m);
+if(m<2){
+printf("Error! USted ingreso un parametro menor a 2 \n");
+exit(1);	
+}
+/* array que guarda el numero de pasos de cada marcha para un mismo valor de distancia*/
+double numero_pasos[50];
+/* angulo phi segun coord. esfericas */
+double phi = 0.0;
+/* angulo theta segun coord. esfericas */
+double theta = 0.0;
+/* r =1 es el valor del paso que se da */
+int r = 1;
+/* Numero pi */
+double pi = 3.1415;
+/* cuenta la distancia que se va recorriendo en cada una de las marchas */
+double contador_distancia = 0.0;
+/* Esta variable va de 10 en 10*/
+int inicio =10;
+/*cuenta los pasos que se van dando en cada marcha aleatoria*/
+int contador_pasos = 0;
+/*inicializa en 0 el array de pasos*/
+for (i=0;i<50;i++){
+numero_pasos[i] = 0;
+}
+/*for para*/
+for (j=0;j<m;j++){
+i = 0;
+inicio = 10;
+contador_distancia = 0;
+contador_pasos = 0;
+posx = 0;
+posy = 0;
+posz = 0;
+while(contador_distancia <= 500){
+theta = drand48()*pi;
+/*printf("%f\n",theta);*/
+phi = drand48()*2*pi;
+posx += sin(theta)*cos(phi);
+posy += sin(theta)*sin(phi);
+posz += cos(theta);
+contador_distancia = sqrt((pow(posx,2))+(pow(posy,2))+(pow(posz,2)));
+/*prueba*/
+if(j==0){
+printf("%f\n",contador_distancia);
+}
+contador_pasos += 1;
+i += 1;
+if(contador_distancia > inicio){
+numero_pasos[(inicio/10)-1] += contador_pasos;
+inicio += 10;
+}	
+}
+}
+for (k=0;k<50;k++){
+numero_pasos[k] = numero_pasos[k]/m;
+}
+/*opens the file, writes, closes the file*/
+in = fopen(archivo,"w");
+printf("El archivo fue creado con exito");
+if(!in){
+printf("problems opening the file %s\n", archivo);
+exit(1);
+}
+for(i=0;i<50;i++){
+fprintf(in, "%d %f\n", 10*(i+1), numero_pasos[i]);
+}
+fclose(in);
+return 0;
+}
