@@ -5,29 +5,22 @@
 #include <math.h>
 #include <stdio.h>
 
-double func_prime_1(double t, double x, double y, double a, double b);
-double func_prime_2(double t, double x, double y, double c, double d);
+double func_prime_1(double t, double x, double y);
+double func_prime_2(double t, double x, double y);
 
 
 int main(int argc, char **argv){
 FILE *in;
 
-h=0.01;
-min_x = 0.0; 
-max_x = 6.0;
-n_points = int((max_x-min_x)/h);
+double h=0.01;
+double min_x = 0.0; 
+double max_x = 6.0;
+int n_points = int((max_x-min_x)/h);
 double A=20.0;
 double B=1.0;
 double C=30.0;
 double D=1.0;
- double a=0.0;
- double b=0.0;
- double c=0.0;
- double d=0.0;
 
-double t;
-double x;
-double y;
  double dx=0.0;
  double dy=0.0;
 
@@ -42,7 +35,7 @@ double x[n_points];
 double y[n_points];
 double t[n_points];
 
-for(i=0;i<n_points;i=i+i/n_points){
+for(int i=0;i<n_points;i=i+i/n_points){
 t[i]=i/n_points;
  }
 
@@ -57,34 +50,60 @@ double y[0] = atoi(argv[2]);
 
 }
 
-double func_prime_1(double t, double x, double y, double a, double b){
-  A=a;
-  B=b;
+double func_prime_1(double t, double x, double y){
+ 
   dx=A*x-B*x*y;
   return dx;
 }
 
-double func_prime_2(double t, double x, double y, double c, double d){
-  C=c;
-  D=d;
-  dy=-C*y+D*x*y;
+double func_prime_2(double t, double x, double y){
+ 
+ dy=-C*y+D*x*y;
 
   return dy;
 }
 
-for(i=1;i<n_puntos;i++){
+
+double k_1_prime1=0.0;
+double k_2_prime1=0.0;
+double x1=0.0;
+double y1_1=0.0;
+double y2_1=0.0;
+double k_2_prime1=0.0;
+double k_2_prime2=0.0;
+double x2=0.0;
+double y1_2=0.0;
+double y2_2=0.0;
+double k_3_prime1=0.0;
+double k_3_prime2=0.0;
+double x3=0.0;
+double y1_3=0.0;
+double y2_3=0.0;
+double k_4_prime1=0.0;
+double k_4_prime2=0.0;
+double average_k_1=0.0;
+double average_k_2=0.0;
+double x_new=0.0;
+double y_1_new=0.0;
+double y_2_new=0.0;
+
+
+
+
+for(int i=1;i<n_puntos;i++){
+
     
     k_1_prime1 = func_prime_1(t[i-1],x[i-1], y[i-1]);
     k_1_prime2 = func_prime_2(t[i-1],x[i-1], y[i-1]);
     
-    #first step
+    /*#first step */
     x1 = t[i-1]+ (h/2.0);
     y1_1 = x[i-1] + (h/2.0) * k_1_prime1;
     y2_1 = y[i-1] + (h/2.0) * k_1_prime2;
     k_2_prime1 = func_prime_1(x1, y1_1, y2_1);
     k_2_prime2 = func_prime_2(x1, y1_1, y2_1);
     
-    #second step
+    /* #second step*/
     x2 = t[i-1] + (h/2.0);
     y1_2 = x[i-1] + (h/2.0) * k_2_prime1;
     y2_2 = y[i-1] + (h/2.0) * k_2_prime2;
@@ -92,14 +111,14 @@ for(i=1;i<n_puntos;i++){
     k_3_prime2 = func_prime_2(x2, y1_2, y2_2);
     
     
-    #third
+    /* #third*/
     x3 = t[i-1] + h;
     y1_3 = x[i-1] + h * k_3_prime1;
     y2_3 = y[i-1] + h * k_3_prime2;
     k_4_prime1 = func_prime_1(x3, y1_3, y2_3;
     k_4_prime2 = func_prime_2(x3, y1_3, y2_3);
     
-    #fourth step
+			      /*fourth step*/
     average_k_1 = (1.0/6.0)*(k_1_prime1 + 2.0*k_2_prime1 + 2.0*k_3_prime1 + k_4_prime1);
     average_k_2 = (1.0/6.0)*(k_1_prime2 + 2.0*k_2_prime2 + 2.0*k_3_prime2 + k_4_prime2);
     
@@ -122,7 +141,7 @@ if(!in){
 printf("problemas con el archivo %s\n", archivo);
 exit(1);
 }
-for(i=0;i<n_points;i++){
+for(int i=0;i<n_points;i++){
 fprintf(in, "%d %f\n", t[i], x[i],y[i]);
 }
 fclose(in);
