@@ -1,96 +1,81 @@
-/*#ejercicio 1
+/* Ejercicio 1
 #Tarea 6 metodos computacionales*/
 /* Manuel Ariza Fuentes y Billy Revelo */
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
 
-double func_prime_1(double t, double x, double y);
-double func_prime_2(double t, double x, double y);
+float func_prime_1(float t, float x, float y);
+float func_prime_2(float t, float x, float y);
 
 
 int main(int argc, char **argv){
-FILE *in;
+FILE *filename;
 
-double h=0.01;
-double min_x = 0.0; 
-double max_x = 6.0;
+/* Constantes de derivacion */
+float h=0.01;
+float min_x = 0.0; 
+float max_x = 1.0;
 int n_points = int((max_x-min_x)/h);
-double A=20.0;
-double B=1.0;
-double C=30.0;
-double D=1.0;
+int i=0;
 
- double dx=0.0;
- double dy=0.0;
+
 
 /*Revisa que el numero de argumentos sea correcto*/
 if(argc!=3){
 printf("No se ingresaron los 2 argumentos requeridos \n");
 exit(1);
 }
+/* Punteros de las 3 variables */
+float* t;
+float* x;
+float* y;
 
-
-double x[n_points];
-double y[n_points];
-double t[n_points];
-
-for(int i=0;i<n_points;i=i+i/n_points){
-t[i]=i/n_points;
- }
+/* Espacio para los 3 punteros */
+t = malloc(n_points*sizeof(int));
+x = malloc(n_points*sizeof(int));
+y = malloc(n_points*sizeof(int));
 
 
 
 /*Las condiciones iniciales */
 
- double t[0] = min_x;
-double x[0] = atoi(argv[1]);
-double y[0] = atoi(argv[2]);
+t[0] = min_x;
+x[0] = atof(argv[1]);
+y[0] = atof(argv[2]);
 
 
-}
-
-double func_prime_1(double t, double x, double y){
- 
-  dx=A*x-B*x*y;
-  return dx;
-}
-
-double func_prime_2(double t, double x, double y){
- 
- dy=-C*y+D*x*y;
-
-  return dy;
-}
-
-
-double k_1_prime1=0.0;
-double k_2_prime1=0.0;
-double x1=0.0;
-double y1_1=0.0;
-double y2_1=0.0;
-double k_2_prime1=0.0;
-double k_2_prime2=0.0;
-double x2=0.0;
-double y1_2=0.0;
-double y2_2=0.0;
-double k_3_prime1=0.0;
-double k_3_prime2=0.0;
-double x3=0.0;
-double y1_3=0.0;
-double y2_3=0.0;
-double k_4_prime1=0.0;
-double k_4_prime2=0.0;
-double average_k_1=0.0;
-double average_k_2=0.0;
-double x_new=0.0;
-double y_1_new=0.0;
-double y_2_new=0.0;
+/*Funciones para el Runge_Kutta */
+float k_1_prime1;
+float k_1_prime2;
+float x1;
+float y1_1;
+float y2_1;
+float k_2_prime1;
+float k_2_prime2;
+float x2;
+float y1_2;
+float y2_2;
+float k_3_prime1;
+float k_3_prime2;
+float x3;
+float y1_3;
+float y2_3;
+float k_4_prime1;
+float k_4_prime2;
+float average_k_1;
+float average_k_2;
+float x_new;
+float y_1_new;
+float y_2_new;
 
 
+/* Runge Kutta Fourth Order Step */
 
-
-for(int i=1;i<n_puntos;i++){
+for(i=1;i<n_points;i++){
+t[i]=0.0;
+x[i] = 0.0;
+y[i] = 0.0;
 
     
     k_1_prime1 = func_prime_1(t[i-1],x[i-1], y[i-1]);
@@ -115,7 +100,7 @@ for(int i=1;i<n_puntos;i++){
     x3 = t[i-1] + h;
     y1_3 = x[i-1] + h * k_3_prime1;
     y2_3 = y[i-1] + h * k_3_prime2;
-    k_4_prime1 = func_prime_1(x3, y1_3, y2_3;
+    k_4_prime1 = func_prime_1(x3, y1_3, y2_3);
     k_4_prime2 = func_prime_2(x3, y1_3, y2_3);
     
 			      /*fourth step*/
@@ -133,17 +118,46 @@ for(int i=1;i<n_puntos;i++){
 }
     
 /*Crea el archivo y escribe en el*/
-char archivo[50]="poblaciones_x0_y0.dat";
-    sprintf(archivo, "poblaciones_%d_%d.dat", atoi(argv[1]),atoi(argv[2]));
-in = fopen(archivo,"w");
+char archivo[100]="poblaciones_x0_y0.dat";
+sprintf(archivo, "poblaciones_%f_%f.dat", x[0],y[0]);
+filename = fopen(archivo,"w");
 printf("El archivo fue creado con exito");
-if(!in){
+
+if(!filename){
 printf("problemas con el archivo %s\n", archivo);
 exit(1);
 }
-for(int i=0;i<n_points;i++){
-fprintf(in, "%d %f\n", t[i], x[i],y[i]);
+
+/* Las 3 columnas de las variables, incluyendo las condiciones iniciales */
+for(i=0;i<n_points;i++){
+fprintf(filename, "%f %f %f \n", t[i], x[i],y[i]);
+ 
 }
-fclose(in);
-return 0;
+ fclose(filename);
+ return 0;
+
+}
+
+
+/* Primera  ecuacion*/
+
+float func_prime_1 (float t, float x, float y){
+float dx;
+float A=20.0;
+float B=1.0;
+ 
+  dx=A*x-B*x*y;
+  return dx;
+}
+
+
+/* Segunda Ecuacion */
+float func_prime_2 (float t, float x, float y){
+float dy;
+float C=30.0;
+float D=1.0;
+ 
+ dy=-C*y+D*x*y;
+
+  return dy;
 }
