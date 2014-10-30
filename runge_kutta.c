@@ -17,7 +17,7 @@ FILE *filename;
 float h=0.01;
 float min_x = 0.0; 
 float max_x = 1.0;
-int n_points =int((max_x-min_x)/h);
+int n_points =((max_x-min_x)/h);
 int i=0;
 
 
