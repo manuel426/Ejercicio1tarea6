@@ -20,4 +20,4 @@ plt.ylabel('Numero de cazadores')
 plt.title('Dinamica de cazador-presa')
 
 #Guarda en un pdf
-plt.savefig(str(nombredatos)+'.pdf',format='pdf')
+plt.savefig(str(filename)+'.pdf',format='pdf')
