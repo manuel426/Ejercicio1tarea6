@@ -6,16 +6,13 @@ import matplotlib.pyplot as plt
 #Importa el archivo
 filename = sys.argv[1]
 #cargar datos del archivo
-matriz = np.loadtxt(nombredatos)
+matriz = np.loadtxt(filename)
 #definir arreglos para graficar
 t= matriz[:,0]
 x = matriz[:,1]
 y = matriz[:,2]
-#saber cuales fueron las condiciones iniciales
-l=list(filename)
-n=len(l)
-l[n-4:n]=[]
-filename="".join(l)
+
+
 #Graficar
 plt.plot(x,y)
 plt.xlabel('Numero de Presas')
