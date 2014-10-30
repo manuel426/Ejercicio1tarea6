@@ -1,0 +1,23 @@
+import numpy as np
+import sys
+import matplotlib.pyplot as plt
+
+
+#recogemos el nombre del archivo.dat que entra como parametro
+filename = sys.argv[1]
+#cargar datos del archivo
+datos = np.loadtxt(nombredatos)
+#definir arreglos para graficar
+x = datos[:,1]
+y = datos[:,2]
+#saber cuales fueron las condiciones iniciales
+l=list(filename)
+n=len(l)
+l[n-4:n]=[]
+filename="".join(l)
+#Graficar
+plt.plot(x,y)
+plt.xlabel('Numero de Presas')
+plt.ylabel('Numero de cazadores')
+plt.title('Dinamica de cazador-presa')
+plt.savefig(str(nombredatos)+'.pdf')
