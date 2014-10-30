@@ -16,7 +16,7 @@ FILE *filename;
 float h=0.01;
 float min_x = 0.0; 
 float max_x = 1.0;
-int n_points = int((max_x-min_x)/h);
+float n_points = ((max_x-min_x)/h);
 int i=0;
 
 
@@ -32,9 +32,9 @@ float* x;
 float* y;
 
 /* Espacio para los 3 punteros */
-t = malloc(n_points*sizeof(int));
-x = malloc(n_points*sizeof(int));
-y = malloc(n_points*sizeof(int));
+ t = malloc(n_points*sizeof(float));
+ x = malloc(n_points*sizeof(float));
+ y = malloc(n_points*sizeof(float));
 
 
 
